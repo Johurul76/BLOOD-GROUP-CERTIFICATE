@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Group Certificate</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        h1, h2, h3 {
+            text-align: center;
+            margin: 0;
+        }
+        h1 {
+            font-size: 28px;
+            color: #d32f2f;
+        }
+        h2 {
+            font-size: 20px;
+            color: #1976d2;
+            margin-top: 5px;
+        }
+        h3 {
+            font-size: 14px;
+            color: #555;
+            margin-top: 0px;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 3px;
+            color: #333;
+        }
+        input, select {
+            width: 97%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #388e3c;
+            color: #ffffff;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background: #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JANNAT PHARMACY</h1>
+        <h3>Dr. Mst Afrina Begum</h3>
+        <h2>BLOOD GROUP CERTIFICATE</h2>
+        <form id="certificateForm">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Enter your full name" required>
+
+            <label for="fatherName">Father's Name</label>
+            <input type="text" id="fatherName" placeholder="Enter father's name" required>
+
+            <label for="motherName">Mother's Name</label>
+            <input type="text" id="motherName" placeholder="Enter mother's name" required>
+
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" required>
+
+            <label for="sex">Sex</label>
+            <select id="sex" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="bloodGroup">Blood Group</label>
+            <select id="bloodGroup" required>
+                <option value="A+ (Positive)">A+ (Positive)</option>
+                <option value="A- (Negative)">A- (Negative)</option>
+                <option value="B+ (Positive)">B+ (Positive)</option>
+                <option value="B- (Negative)">B- (Negative)</option>
+                <option value="O+ (Positive)">O+ (Positive)</option>
+                <option value="O- (Negative)">O- (Negative)</option>
+                <option value="AB+ (Positive)">AB+ (Positive)</option>
+                <option value="AB- (Negative)">AB- (Negative)</option>
+            </select>
+
+            <button type="button" onclick="generatePDF()">CERTIFICATE</button>
+        </form>
+    </div>
+
+    <script>
+        async function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+
+            // Serial Number
+            const serialNumber = Math.floor(1000 + Math.random() * 9000);
+
+            // Input values
+            const name = document.getElementById('name').value;
+            const fatherName = document.getElementById('fatherName').value;
+            const motherName = document.getElementById('motherName').value;
+            const dob = document.getElementById('dob').value;
+            const sex = document.getElementById('sex').value;
+            const bloodGroup = document.getElementById('bloodGroup').value;
+
+            // Format Date of Birth
+            const dobFormatted = new Date(dob).toLocaleDateString('en-GB');
+
+            // Calculate age
+            const birthDate = new Date(dob);
+            const age = new Date().getFullYear() - birthDate.getFullYear();
+
+            // Current date
+            const today = new Date().toLocaleDateString('en-GB');
+            const day = new Date().toLocaleString('en-us', { weekday: 'long' });
+
+            // Border
+            pdf.setLineWidth(0.6);
+            pdf.setDrawColor(0, 0, 0);
+            pdf.rect(10, 10, 190, 120);
+
+            // Watermark (Blood Logo)
+            pdf.setFontSize(25);
+            pdf.setTextColor(230, 230, 230);
+            pdf.text('JANNAT PHARMACY', 120, 75, { align: 'center' });
+			pdf.text('BLOOD GROUP CERTIFICATE', 120, 85, { align: 'center' });
+
+            // Header
+            pdf.setFontSize(30);
+            pdf.setTextColor("#d32f2f");
+            pdf.text('JANNAT PHARMACY', 105, 20, { align: 'center' });
+
+            pdf.setFontSize(12);
+            pdf.setTextColor("#555");
+            pdf.text('Dr. Mst Afrina Begum', 105, 26, { align: 'center' });
+			pdf.text('Kheoyar Chor Bazar, Ulipur, Kurigram', 105, 31, { align: 'center' });
+            pdf.text('Mobile: 01952829076 | Email: JohurulTelicom@gmail.com', 105, 36, { align: 'center' });
+			pdf.text('_______________________________________________________________________________', 105, 38, { align: 'center' });
+
+            pdf.setFontSize(16);
+            pdf.setTextColor("#1976d2");
+            pdf.text('BLOOD GROUP CERTIFICATE', 105, 47, { align: 'center' });
+
+            // Serial Number and Date
+            pdf.setFontSize(12);
+            pdf.setTextColor("#000");
+            pdf.text(`Serial No: ${serialNumber}`, 20, 55);
+            pdf.text(`Date: ${today}`, 160, 55);
+            pdf.text(`${day}`, 171, 59);
+
+            // User Information
+            pdf.setFontSize(12);
+            let y = 70;
+            const userInfo = [
+                { label: "Name", value: name },
+                { label: "Father's Name", value: fatherName },
+                { label: "Mother's Name", value: motherName },
+                { label: "Date of Birth", value: dobFormatted },
+                { label: "Age", value: `${age} years` },
+                { label: "Sex", value: sex },
+                { label: "Blood Group", value: bloodGroup },
+            ];
+
+            userInfo.forEach(info => {
+                pdf.text(`${info.label}:`, 20, y);
+                pdf.text(info.value, 70, y);
+                y += 6;
+            });
+
+            // Doctor's Signature
+            pdf.setTextColor("#388e3c");
+            pdf.text('__________________', 140, y + 5);
+            pdf.text("Doctor's Signature", 145, y + 10);
+			pdf.text("Dr. Mst Afrina Begum", 142, y + 14);
+
+            // Save PDF
+            pdf.save(`${name}_Blood_Group_Certificate.pdf`);
+        }
+    </script>
+</body>
+</html>
